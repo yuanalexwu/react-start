@@ -4,6 +4,10 @@ var webpack = require('webpack');
 var config = require('./webpack.config.dev');
 
 var app = express();
+
+// static files
+app.use(express.static('public'));
+
 var compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
@@ -12,6 +16,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 
 app.use(require('webpack-hot-middleware')(compiler));
+
 
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
