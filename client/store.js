@@ -1,6 +1,7 @@
-import { createStore, compose } from 'redux';
+import { applyMiddleware, createStore, compose } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
+import thunk from 'redux-thunk';
 
 
 // import the root reducers
@@ -22,7 +23,12 @@ const enhancers = compose(
 	window.devToolsExtension? window.devToolsExtension() : f => f
 );
 
-const store = createStore(rootReducer, defaultState, enhancers);
+// apply redux middleware
+const finalCreateStore = compose(
+	applyMiddleware(thunk)
+)(createStore);
+
+const store = finalCreateStore(rootReducer, defaultState, enhancers);
 
 export const history = syncHistoryWithStore(browserHistory, store);
 
